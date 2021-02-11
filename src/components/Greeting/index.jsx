@@ -1,18 +1,38 @@
 import { Component } from "react";
 
-class Greeting extends Component {
+class Aloha extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGreeting: true,
+    };
+  }
+
+  switchState = () => {
+    const { isGreeting } = this.state;
+
+    this.setState({ isGreeting: !isGreeting });
+  };
+
   render() {
-    const { name } = this.props;
-    const { age } = this.props;
+    const { name, age } = this.props;
+    const { isGreeting } = this.state;
     let ageMsg;
-    if(age > 90){
-      ageMsg = 'You so OLD';
-    }else{
-      ageMsg='ok';
+    if (age > 90) {
+      ageMsg = "You so OLD";
+    } else {
+      ageMsg = "ok";
     }
-    
-    return <h1>Hello, {name} Yooou! {ageMsg}</h1>;
+
+    return (
+      <>
+        <h1>
+          {isGreeting ? "Hello" : "Goodbye"}, {name} Yooou! {ageMsg}
+        </h1>
+        <button onClick={this.switchState}>Switch</button>
+      </>
+    );
   }
 }
 
-export default Greeting;
+export default Aloha;
