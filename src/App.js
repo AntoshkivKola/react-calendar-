@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import StopWatch from './components/StopWatch';
+import Calendar from './components/Calendar';
+
 
 class App extends Component {
   // constructor(props) {
@@ -10,7 +11,7 @@ class App extends Component {
   render() {
     return (
       <>
-        <StopWatch />
+        <Calendar />
       </>
     );
   }

@@ -28,7 +28,7 @@ class StopWatch extends Component {
 
   handlerClick = () => {
     const { isGoing} = this.state;
-    this.setState({ isGoing: !this.state.isGoing });
+    this.setState({ isGoing: !isGoing });
     if(isGoing){
       this.start();
     }else{
