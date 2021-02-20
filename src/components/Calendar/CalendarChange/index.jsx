@@ -62,14 +62,10 @@ class CalendarChange extends Component {
   }
 
   setFirstDay = (firstDay) => {
-    this.setState((state) => {
-      return { numOfFirstDay: firstDay };
-    });
+    this.setState({ numOfFirstDay: firstDay });
   };
   setLastDay = (lastDay) => {
-    this.setState((state) => {
-      return { numOfLastDay: lastDay };
-    });
+    this.setState({ numOfLastDay: lastDay });
   };
 
   setCurrentYear = (direction) => {
@@ -83,17 +79,17 @@ class CalendarChange extends Component {
     });
   };
 
-  newAarray = (correction) => {
-    const {  currentMonth } = this.state;
+  newAarray = (correction = 0, month = this.state.currentMonth) => {
+    const currentMonth = month;
+    this.setCurrentMonth(month);
+
     const currentYear = this.state.currentYear + correction;
     console.log(currentYear);
-    const daysInMonth = getDaysInMonth(
-      new Date(currentYear, currentMonth)
-    );
+    const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
 
     this.setFirstDay(getDay(new Date(currentYear, currentMonth, 1)));
     this.setLastDay(getDay(new Date(currentYear, currentMonth, daysInMonth)));
-   // const {  numOfLastDay } = this.state;
+    // const {  numOfLastDay } = this.state;
     const numOfFirstDay = this.state.numOfFirstDay + correction;
     const numOfLastDay = this.state.numOfLastDay + correction;
     console.log(numOfFirstDay);
@@ -110,8 +106,7 @@ class CalendarChange extends Component {
     return arrayOfDays;
   };
 
-  setDaysArray = (direction) => {
-    this.setCurrentYear(direction);
+  setDaysArray = (correction=0, month) => {
 
     const { currentYear } = this.state;
     //const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
@@ -123,12 +118,17 @@ class CalendarChange extends Component {
     //this.newAarray();
     console.log("L: " + currentYear);
 
-    return this.setState({ arrayOfDays: this.newAarray(direction ? 1 : -1) });
+    return this.setState({ arrayOfDays: this.newAarray(correction, month) });
   };
 
   setCurrentDay = (day) => {
     this.setState({ carrentDay: day });
   };
+
+  setCurrentMonth = (month) => {
+    this.setState({ currentMonth: month });
+  };
+
   convertDay = () => {
     const { convertNumDayToStr } = this.props;
     const { carrentDay, currentYear } = this.state;
@@ -139,9 +139,12 @@ class CalendarChange extends Component {
   };
 
   render() {
+    const { months } = this.props;
+
     const {
       carrentDay,
       currentYear,
+      currentMonth,
       arrayOfDays,
       numOfFirstDay,
       numOfLastDay,
@@ -191,8 +194,12 @@ class CalendarChange extends Component {
         <CalendarMonthYear
           currentYear={currentYear}
           setCurrentDay={this.setCurrentDay}
+          setCurrentYear={this.setCurrentYear}
           currentDay={carrentDay}
           setDaysArray={this.setDaysArray}
+          months={months}
+          currentMonth={currentMonth}
+          setCurrentMonth={this.setCurrentMonth}
         />
       </div>
     );

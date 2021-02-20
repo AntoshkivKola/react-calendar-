@@ -9,6 +9,7 @@ dayNames.set(3, "Wendnesday");
 dayNames.set(4, "Thursday");
 dayNames.set(5, "Friday");
 dayNames.set(6, "Saturday");
+const months = ["January", "February", "March", "April", "May", "June",  "July", "August", "September", "October", "November",  "December"];
 
 class Calendar extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class Calendar extends Component {
   render() {
     return (
       <section className="calendar">
-        <CalendarChange convertNumDayToStr={this.convertNumDayToStr} />
+        <CalendarChange convertNumDayToStr={this.convertNumDayToStr} months={months}/>
       </section>
     );
   }
