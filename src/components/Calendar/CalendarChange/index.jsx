@@ -58,6 +58,7 @@ class CalendarChange extends Component {
       arrayOfDays: getSetDaysArray(),
       numOfFirstDay: numOfFirstDay,
       numOfLastDay: numOfLastDay,
+      countWeksInMonth: countWeksInMonth,
     };
   }
 
@@ -79,8 +80,13 @@ class CalendarChange extends Component {
     });
   };
 
+  setCountWeksInMonth = (newCountWeksInMonth) => {
+    this.setState({ countWeksInMonth: newCountWeksInMonth });
+  };
+
   newAarray = (correction = 0, month = this.state.currentMonth) => {
     const currentMonth = month;
+
     this.setCurrentMonth(month);
 
     const currentYear = this.state.currentYear + correction;
@@ -90,8 +96,14 @@ class CalendarChange extends Component {
     this.setFirstDay(getDay(new Date(currentYear, currentMonth, 1)));
     this.setLastDay(getDay(new Date(currentYear, currentMonth, daysInMonth)));
     // const {  numOfLastDay } = this.state;
-    const numOfFirstDay = this.state.numOfFirstDay + correction;
-    const numOfLastDay = this.state.numOfLastDay + correction;
+    const numOfFirstDay = getDay(new Date(currentYear, currentMonth, 1));
+    const numOfLastDay = getDay(
+      new Date(currentYear, currentMonth, daysInMonth)
+    );
+
+    this.setCountWeksInMonth(
+      (countDaysInMonth + numOfFirstDay + (6 - numOfLastDay)) / 7
+    );
     console.log(numOfFirstDay);
     const arrayOfDays = [];
     for (let i = 0; i < numOfFirstDay; i++) {
@@ -106,8 +118,7 @@ class CalendarChange extends Component {
     return arrayOfDays;
   };
 
-  setDaysArray = (correction=0, month) => {
-
+  setDaysArray = (correction = 0, month) => {
     const { currentYear } = this.state;
     //const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
 
@@ -148,6 +159,7 @@ class CalendarChange extends Component {
       arrayOfDays,
       numOfFirstDay,
       numOfLastDay,
+      countWeksInMonth
     } = this.state;
 
     const copyArrayOfDays = JSON.parse(JSON.stringify(arrayOfDays));
