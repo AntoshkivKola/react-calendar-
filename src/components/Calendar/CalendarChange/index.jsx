@@ -8,6 +8,7 @@ import {
   getMonth,
   getYear,
   setMonth,
+  getWeeksInMonth,
 } from "date-fns";
 import CalendarDay from "../CalendarDay";
 import CalendarMonthYear from "../CalendarMonthYear";
@@ -95,14 +96,14 @@ class CalendarChange extends Component {
 
     this.setFirstDay(getDay(new Date(currentYear, currentMonth, 1)));
     this.setLastDay(getDay(new Date(currentYear, currentMonth, daysInMonth)));
-    // const {  numOfLastDay } = this.state;
+    
     const numOfFirstDay = getDay(new Date(currentYear, currentMonth, 1));
     const numOfLastDay = getDay(
       new Date(currentYear, currentMonth, daysInMonth)
     );
 
     this.setCountWeksInMonth(
-      (countDaysInMonth + numOfFirstDay + (6 - numOfLastDay)) / 7
+      getWeeksInMonth(new Date(currentYear, currentMonth))
     );
     console.log(numOfFirstDay);
     const arrayOfDays = [];
@@ -119,16 +120,6 @@ class CalendarChange extends Component {
   };
 
   setDaysArray = (correction = 0, month) => {
-    const { currentYear } = this.state;
-    //const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
-
-    //const { numOfFirstDay, numOfLastDay } = this.state;
-    //console.log(numOfFirstDay);
-
-    //console.log(this.newAarray());
-    //this.newAarray();
-    console.log("L: " + currentYear);
-
     return this.setState({ arrayOfDays: this.newAarray(correction, month) });
   };
 
