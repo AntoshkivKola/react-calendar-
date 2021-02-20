@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  format,
   addDays,
   getDay,
   getDate,
@@ -11,28 +12,23 @@ import {
   getWeeksInMonth,
 } from "date-fns";
 import CalendarDay from "../CalendarDay";
+import CurrentDay from "../CurrentDay";
 import CalendarMonthYear from "../CalendarMonthYear";
+import Month from "../Month";
 
 //====================================
 const currentDate = new Date();
 const currentMonth = getMonth(currentDate);
-const newMonth = getMonth(setMonth(currentDate, currentMonth + 15));
 const currentYear = getYear(currentDate);
 const countDaysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
 const numOfFirstDay = getDay(new Date(currentYear, currentMonth, 1));
 const numOfLastDay = getDay(
   new Date(currentYear, currentMonth, countDaysInMonth)
 );
-const numOfCarrentDay = getDay(new Date());
-// const countWeksInMonth = differenceInCalendarWeeks(
-//   new Date(2021, 1, countDaysInMonth),
-//   new Date(2021, 1, 0)
-// );
-
 const allDaysInMonth = countDaysInMonth + numOfFirstDay + (6 - numOfLastDay);
 const countWeksInMonth = allDaysInMonth / 7;
 
-const getSetDaysArray = () => {
+const getDaysArray = () => {
   const arrayOfDays = [];
   for (let i = 0; i < numOfFirstDay; i++) {
     arrayOfDays.push(undefined);
@@ -53,10 +49,12 @@ class CalendarChange extends Component {
     super(props);
 
     this.state = {
-      carrentDay: getDate(currentDate),
+      currentDay: getDate(currentDate),
       currentYear: currentYear,
       currentMonth: currentMonth,
-      arrayOfDays: getSetDaysArray(),
+
+      currentDate: new Date(),
+      arrayOfDays: getDaysArray(),
       numOfFirstDay: numOfFirstDay,
       numOfLastDay: numOfLastDay,
       countWeksInMonth: countWeksInMonth,
@@ -87,25 +85,20 @@ class CalendarChange extends Component {
 
   newAarray = (correction = 0, month = this.state.currentMonth) => {
     const currentMonth = month;
-
-    this.setCurrentMonth(month);
-
     const currentYear = this.state.currentYear + correction;
-    console.log(currentYear);
     const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
-
-    this.setFirstDay(getDay(new Date(currentYear, currentMonth, 1)));
-    this.setLastDay(getDay(new Date(currentYear, currentMonth, daysInMonth)));
-    
     const numOfFirstDay = getDay(new Date(currentYear, currentMonth, 1));
     const numOfLastDay = getDay(
       new Date(currentYear, currentMonth, daysInMonth)
     );
 
+    this.setCurrentMonth(month);
+    this.setFirstDay(getDay(new Date(currentYear, currentMonth, 1)));
+    this.setLastDay(getDay(new Date(currentYear, currentMonth, daysInMonth)));
     this.setCountWeksInMonth(
       getWeeksInMonth(new Date(currentYear, currentMonth))
     );
-    console.log(numOfFirstDay);
+
     const arrayOfDays = [];
     for (let i = 0; i < numOfFirstDay; i++) {
       arrayOfDays.push(undefined);
@@ -124,7 +117,7 @@ class CalendarChange extends Component {
   };
 
   setCurrentDay = (day) => {
-    this.setState({ carrentDay: day });
+    this.setState({ currentDay: day });
   };
 
   setCurrentMonth = (month) => {
@@ -133,10 +126,10 @@ class CalendarChange extends Component {
 
   convertDay = () => {
     const { convertNumDayToStr } = this.props;
-    const { carrentDay, currentYear } = this.state;
+    const { currentDay, currentYear } = this.state;
 
     return convertNumDayToStr(
-      getDay(new Date(currentYear, currentMonth, carrentDay))
+      getDay(new Date(currentYear, currentMonth, currentDay))
     );
   };
 
@@ -144,65 +137,36 @@ class CalendarChange extends Component {
     const { months } = this.props;
 
     const {
-      carrentDay,
+      currentDay,
       currentYear,
       currentMonth,
       arrayOfDays,
-      numOfFirstDay,
-      numOfLastDay,
-      countWeksInMonth
+      countWeksInMonth,
     } = this.state;
-
-    const copyArrayOfDays = JSON.parse(JSON.stringify(arrayOfDays));
-    const weeklees = [];
-
-    for (let i = 0; i < countWeksInMonth; i++) {
-      weeklees.push([]);
-      for (let j = 0; j < 7; j++) {
-        weeklees[i].push(copyArrayOfDays.shift());
-      }
-    }
-
-    const daysArray = weeklees.map((week) => {
-      return (
-        <div>
-          {week.map((d) => {
-            return (
-              <CalendarDay
-                dayNumber={d}
-                currentDay={carrentDay}
-                setCurrentDay={this.setCurrentDay}
-              />
-            );
-          })}
-        </div>
-      );
-    });
 
     return (
       <div>
-        {`numOfCarrentDay: ${numOfCarrentDay}\t`}
-        {`numOfFirstDay: ${numOfFirstDay}\t`}
-        {`numOfLastDay: ${numOfLastDay}\t`}
-        <hr />
-        {`countDaysInMonth: ${countDaysInMonth}\n`}
-        {`allDaysInMonth: ${allDaysInMonth}\n`}
-        {`currentMonth: ${currentMonth}\n`}
-        {`newMonth: ${newMonth}\n`}
-        <hr />
-        <h3>{`S.....M.....T.....W.....T.....F.....S`}</h3>
-        {daysArray}
-
-        <h2>{`${this.convertDay()} ${carrentDay}`}</h2>
         <CalendarMonthYear
           currentYear={currentYear}
           setCurrentDay={this.setCurrentDay}
           setCurrentYear={this.setCurrentYear}
-          currentDay={carrentDay}
+          currentDay={currentDay}
           setDaysArray={this.setDaysArray}
           months={months}
           currentMonth={currentMonth}
           setCurrentMonth={this.setCurrentMonth}
+        />
+        <h3>{`S.....M.....T.....W.....T.....F.....S`}</h3>
+        <Month
+          arrayOfDays={arrayOfDays}
+          countWeksInMonth={countWeksInMonth}
+          currentDay={currentDay}
+          setCurrentDay={this.setCurrentDay}
+        />
+
+        <CurrentDay
+          date={new Date(currentYear, currentMonth, currentDay)}
+          currentDay={currentDay}
         />
       </div>
     );

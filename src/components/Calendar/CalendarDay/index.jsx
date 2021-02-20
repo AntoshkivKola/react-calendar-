@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 const CalendarDay = (props) => {
   const { dayNumber, currentDay, setCurrentDay } = props;
@@ -15,7 +15,7 @@ const CalendarDay = (props) => {
   };
 
   return (
-    <button style={styles} onClick={updateCurrentDay}>
+    <button style={styles} onClick={dayNumber?updateCurrentDay:undefined}>
       {dayNumber}
     </button>
   );
