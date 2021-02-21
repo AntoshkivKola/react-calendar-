@@ -1,48 +1,58 @@
-import React, { Component } from "react";
+import React from "react";
+import styles from "./CalendarMonthYear.module.scss";
+import PropTypes from "prop-types";
 
-class CalendarMonthYear extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  yearUp=()=>{
-    const {setCurrentDay,currentDay,setDaysArray,setCurrentYear} = this.props;
+function CalendarMonthYear(props) {
+  const yearUp = () => {
+    const { setDaysArray, setCurrentYear } = props;
     setDaysArray(1);
     setCurrentYear(true);
-    setCurrentDay(currentDay);
-    
   };
-  yearDown=()=>{
-    const {setCurrentDay,currentDay,setDaysArray,setCurrentYear} = this.props;
+  const yearDown = () => {
+    const { setDaysArray, setCurrentYear } = props;
     setDaysArray(-1);
     setCurrentYear(false);
-    setCurrentDay(currentDay);
-   
   };
 
-  handleChangeMonth=({target:{value}})=>{
-    const {setCurrentMonth,setDaysArray}= this.props;
-    setDaysArray(0,value);
-
+  const handleChangeMonth = ({ target: { value } }) => {
+    const { setDaysArray } = props;
+    setDaysArray(0, value);
   };
 
-  render() {
-   
-    const {currentYear, months,currentMonth} = this.props;
-    const mothsRender=months.map((month, index)=>{
-      return <option value={index}>{month}</option>
-    })
-    return (
+  const { currentYear, months, currentMonth } = props;
+  const mothsRender = months.map((month, index) => {
+    return <option value={index}>{month}</option>;
+  });
+  return (
+    <div className={styles.constainer}>
+      <select
+        className={styles.month}
+        value={currentMonth}
+        onChange={handleChangeMonth}
+      >
+        {mothsRender}
+      </select>
       <div>
-        <button onClick={this.yearDown}>{'<'}</button>
-        <h1>{currentYear} {months[currentMonth]}</h1>
-        <button onClick={this.yearUp}>{'>'}</button>
-        <select value={currentMonth} onChange={this.handleChangeMonth}>
-          {mothsRender}
-          </select>
+        <button className={styles.yearBtn} onClick={yearUp}>
+          {"<"}
+        </button>
+        <h1 className={styles.year}>{currentYear}</h1>
+        <button className={styles.yearBtn} onClick={yearDown}>
+          {">"}
+        </button>
       </div>
-    );
-  }
+    </div>
+  );
 }
+
+CalendarMonthYear.propTypes = {
+  currentYear: PropTypes.number.isRequired,
+  setCurrentYear: PropTypes.func.isRequired,
+  setDaysArray: PropTypes.func.isRequired,
+  months: PropTypes.arrayOf(PropTypes.string),
+  currentMonth: PropTypes.number,
+  setCurrentMonth: PropTypes.func,
+ 
+};
 
 export default CalendarMonthYear;

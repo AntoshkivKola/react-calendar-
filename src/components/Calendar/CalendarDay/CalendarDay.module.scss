@@ -1,0 +1,27 @@
+.day{
+  background-color: white;
+  cursor: pointer;
+  outline: none;
+  text-align: center;
+ 
+  font-size: 1.5rem;
+  min-width: 60px;
+  color: rgb(129, 115, 115);
+  border: 5px solid transparent;
+  padding: 10px;
+}
+
+.noneDay{
+  min-width: 60px;
+  opacity: 0;
+}
+
+.currentDay{
+  color: #ee2d2d;
+  border: {
+    size: 5px;
+    style: solid;
+    color: #ee2d2d;
+    radius: 50%;
+  }
+}

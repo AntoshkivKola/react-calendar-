@@ -1,24 +1,30 @@
 import React from "react";
+import styles from "./CalendarDay.module.scss";
+import PropTypes from "prop-types";
 
 const CalendarDay = (props) => {
   const { dayNumber, currentDay, setCurrentDay } = props;
-  const styles = {
-    //border: isSelected ? "4px solid" : undefined,
-    minWidth: "40px",
-    backgroundColor: dayNumber === currentDay ? "gray" : undefined,
-    //display: dayNumber ? "inline-block" : "none",
-    opacity: dayNumber ? 1 : 0,
-  };
-
+ 
   const updateCurrentDay = () => {
     setCurrentDay(dayNumber);
   };
 
   return (
-    <button style={styles} onClick={dayNumber?updateCurrentDay:undefined}>
+    <button
+      className={`${dayNumber ? styles.day : styles.noneDay} ${
+        dayNumber === currentDay ? styles.currentDay : ""
+      }`}
+      onClick={dayNumber ? updateCurrentDay : undefined}
+    >
       {dayNumber}
     </button>
   );
 };
+
+CalendarDay.propTypes = {
+  dayNumber: PropTypes.number.isRequired,
+  currentDay: PropTypes.number,
+  setCurrentDay: PropTypes.func,
+}
 
 export default CalendarDay;

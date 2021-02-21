@@ -1,24 +1,26 @@
 import React from "react";
 import CalendarDay from "../CalendarDay";
+import styles from "./Month.module.scss";
+import PropTypes from 'prop-types';
 
 const Month = (props) => {
 
   const {arrayOfDays,countWeksInMonth, currentDay,setCurrentDay} = props;
-
+  console.dir(setCurrentDay)
 
   const copyArrayOfDays = JSON.parse(JSON.stringify(arrayOfDays));
-  const weeks = [];
+  const month = [];
 
   for (let i = 0; i < countWeksInMonth; i++) {
-    weeks.push([]);
+    month.push([]);
     for (let j = 0; j < 7; j++) {
-      weeks[i].push(copyArrayOfDays.shift());
+      month[i].push(copyArrayOfDays.shift());
     }
   }
 
-  return weeks.map((week) => {
+  return month.map((week) => {
     return (
-      <div>
+      <div className={styles.week}>
         {week.map((d) => {
           return (
             <CalendarDay
@@ -33,5 +35,12 @@ const Month = (props) => {
   });
    
 };
+
+Month.propTypes = {
+  arrayOfDays: PropTypes.arrayOf(PropTypes.number).isRequired,
+  countWeksInMonth: PropTypes.number.isRequired,
+  currentDay: PropTypes.number,
+  setCurrentDay: PropTypes.func,
+}
 
 export default Month;

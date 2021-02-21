@@ -1,0 +1,39 @@
+.constainer {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  color: rgb(38, 211, 139);
+  font-weight: bold;
+}
+
+.yearBtn {
+  margin: 5px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  background-color: white;
+  transform: rotate(90deg);
+  font-size: 1.2rem;
+  &:hover {
+    background-color: rgb(159, 228, 205);
+    border-radius: 50%;
+  }
+}
+
+.year {
+  font-size: 2rem;
+}
+
+.month {
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 2rem;
+  font-weight: 800;
+  color: inherit;
+  margin-right: 15px;
+}

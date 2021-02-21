@@ -1,20 +1,17 @@
 import React, { Component } from "react";
 import {
-  format,
-  addDays,
   getDay,
   getDate,
-  differenceInCalendarWeeks,
   getDaysInMonth,
   getMonth,
   getYear,
-  setMonth,
   getWeeksInMonth,
 } from "date-fns";
-import CalendarDay from "../CalendarDay";
+import PropTypes from "prop-types";
 import CurrentDay from "../CurrentDay";
 import CalendarMonthYear from "../CalendarMonthYear";
 import Month from "../Month";
+import styles from "./CalendarChange.module.scss";
 
 //====================================
 const currentDate = new Date();
@@ -84,6 +81,7 @@ class CalendarChange extends Component {
   };
 
   newAarray = (correction = 0, month = this.state.currentMonth) => {
+    const { currentDay } = this.state;
     const currentMonth = month;
     const currentYear = this.state.currentYear + correction;
     const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
@@ -91,7 +89,7 @@ class CalendarChange extends Component {
     const numOfLastDay = getDay(
       new Date(currentYear, currentMonth, daysInMonth)
     );
-
+    this.setCurrentDay(currentDay);
     this.setCurrentMonth(month);
     this.setFirstDay(getDay(new Date(currentYear, currentMonth, 1)));
     this.setLastDay(getDay(new Date(currentYear, currentMonth, daysInMonth)));
@@ -145,32 +143,46 @@ class CalendarChange extends Component {
     } = this.state;
 
     return (
-      <div>
-        <CalendarMonthYear
-          currentYear={currentYear}
-          setCurrentDay={this.setCurrentDay}
-          setCurrentYear={this.setCurrentYear}
-          currentDay={currentDay}
-          setDaysArray={this.setDaysArray}
-          months={months}
-          currentMonth={currentMonth}
-          setCurrentMonth={this.setCurrentMonth}
-        />
-        <h3>{`S.....M.....T.....W.....T.....F.....S`}</h3>
-        <Month
-          arrayOfDays={arrayOfDays}
-          countWeksInMonth={countWeksInMonth}
-          currentDay={currentDay}
-          setCurrentDay={this.setCurrentDay}
-        />
-
-        <CurrentDay
-          date={new Date(currentYear, currentMonth, currentDay)}
-          currentDay={currentDay}
-        />
+      <div className={styles.container}>
+        <div className={styles.currentDay}>
+          <CurrentDay
+            date={new Date(currentYear, currentMonth, currentDay)}
+            currentDay={currentDay}
+          />
+        </div>
+        <div className={styles.changeDate}>
+          <CalendarMonthYear
+            currentYear={currentYear}
+            setCurrentYear={this.setCurrentYear}
+            setDaysArray={this.setDaysArray}
+            months={months}
+            currentMonth={currentMonth}
+            setCurrentMonth={this.setCurrentMonth}
+          />
+          <div className={styles.days}>
+            <h3>S</h3>
+            <h3>M</h3>
+            <h3>T</h3>
+            <h3>W</h3>
+            <h3>T</h3>
+            <h3>F</h3>
+            <h3>S</h3>
+          </div>
+          <div className={styles.month}>
+            <Month
+              arrayOfDays={arrayOfDays}
+              countWeksInMonth={countWeksInMonth}
+              currentDay={currentDay}
+              setCurrentDay={this.setCurrentDay}
+            />
+          </div>
+        </div>
       </div>
     );
   }
 }
-
+CalendarChange.propTypes = {
+  months: PropTypes.arrayOf(PropTypes.string).isRequired,
+  convertNumDayToStr: PropTypes.func.isRequired,
+};
 export default CalendarChange;
